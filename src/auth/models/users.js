@@ -20,7 +20,7 @@ const userModel = (sequelize, DataTypes) => {
       type: DataTypes.ENUM('user', 'writer', 'editor', 'admin'),
       required: true,
       defaultValue: 'user',
-    },
+    }, 
     token: {
       type: DataTypes.VIRTUAL,
       get() {

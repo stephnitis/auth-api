@@ -4,8 +4,9 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const logger = require('./middleware/logger');
-const v1Routes = require('./routes/v1');
+const logger = require('./auth/middleware/logger');
+const v1Routes = require('./auth/route/v1');
+const v2Routes = require('./auth/route/v2');
 
 // Esoteric Resources
 const errorHandler = require('./error-handlers/500');
@@ -20,21 +21,23 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 app.use(logger);
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1', v1Routes);
+app.use('/api/v2', v2Routes);
 // Routes
 app.use(authRoutes);
 
 // Catchalls
-app.use(notFound);
+app.use('*', notFound);
 app.use(errorHandler);
 
 module.exports = {
   server: app,
   start: (PORT) => {
+    if (!PORT) { throw new Error('Missing Port'); }
     app.listen(PORT, () => {
       console.log(`Server Up on ${PORT}`);
     });
   },
 };
+

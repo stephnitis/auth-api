@@ -2,11 +2,12 @@
 
 const express = require('express');
 const authRouter = express.Router();
-
-const { users } = require('./models');
-const basicAuth = require('./middleware/basic.js');
 const bearerAuth = require('./middleware/bearer.js');
 const permissions = require('./middleware/acl.js');
+const { users } = require('./models');
+const basicAuth = require('./middleware/basic.js');
+
+
 
 authRouter.post('/signup', async (req, res, next) => {
   try {
@@ -17,7 +18,7 @@ authRouter.post('/signup', async (req, res, next) => {
     };
     res.status(201).json(output);
   } catch (e) {
-    next(e.message);
+    next('signup error', e.message);
   }
 });
 
